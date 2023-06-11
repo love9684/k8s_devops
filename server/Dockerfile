@@ -1,6 +1,6 @@
 FROM node:18
 
-ENV PORT = 3010
+ENV PORT=3010
 
 # Create app directory
 WORKDIR /usr/src/app
