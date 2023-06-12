@@ -15,6 +15,32 @@ spec:
       containers:
       - name: node-app-container
         image: loveleshagrawal/k8s-node-app:latest
+        env:
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: mongo-root-username
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: mongo-root-password
+        - name: MONGO_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config-map
+              key: MONGO_HOSTNAME
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config-map
+              key: MONGO_PORT
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config-map
+              key: MONGO_DB
         ports:
         - name: http
           containerPort: 3010
