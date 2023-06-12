@@ -1,6 +1,4 @@
-const mongodb = require("mongodb");
-
-const mongoClient = mongodb.MongoClient;
+const mongoClient = require("mongodb").MongoClient;
 
 const {
     MONGO_USERNAME,
@@ -10,16 +8,9 @@ const {
     MONGO_DB
 } = process.env;
 
-console.log(MONGO_USERNAME,
-    MONGO_PASSWORD,
-    MONGO_HOSTNAME,
-    MONGO_PORT,
-    MONGO_DB);
-
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
 let _db;
-
 
 const mongoConnect = (cb) => {
     mongoClient.connect(url, {
@@ -32,11 +23,9 @@ const mongoConnect = (cb) => {
         cb();
     }).
     catch(err => console.log('Error', err, url));
-
 }
 
-
-getDB = () => {
+const getDB = () => {
     if (_db) {
         return _db;
     }
