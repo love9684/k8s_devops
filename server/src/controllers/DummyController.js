@@ -8,6 +8,7 @@ exports.getDummyData = async (req, res) => {
 
 exports.setDummyData = async (req, res) => {
     const db = getDB();
+    console.log('req.body', req.body);
     await db.collection('user').insertOne(req.body);
     res.sendStatus(200);
 }
