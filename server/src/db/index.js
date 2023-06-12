@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+const mongodb = require("mongodb");
+
+const mongoClient = mongodb.MongoClient;
 
 const {
     MONGO_USERNAME,
@@ -20,7 +22,7 @@ let _db;
 
 
 const mongoConnect = (cb) => {
-    mongoose.connect(url, {
+    mongoClient.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
