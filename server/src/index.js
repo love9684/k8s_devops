@@ -1,8 +1,9 @@
 const express = require('express');
 const http = require('http');
-const dummyRouter = require('./routes/DummyRoutes');
 
-require('./db');
+const { mongoConnect } = require('./db');
+
+const dummyRouter = require('./routes/DummyRoutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,8 @@ const port = process.env.PORT || 3000;
 app.use('/dummy', dummyRouter);
 app.use(express.json());
 
-server.listen(port, () => {
-    console.log('Node app is listening on port: ', port)
+mongoConnect(() => {
+    server.listen(port, () => {
+        console.log('Node app is listening on port: ', port)
+    })
 })
