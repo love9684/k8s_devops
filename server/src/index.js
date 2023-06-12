@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const http = require('http');
 
 const { mongoConnect } = require('./db');
@@ -9,10 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 
-// router.get('/getDummyData', async (req, res) => {
-//     res.send([{name: 'lovelesh'}]);
-// })
-
+app.use(bodyParser.urlencoded({extended: false}));
 app.use('/dummy', dummyRouter);
 app.use(express.json());
 
