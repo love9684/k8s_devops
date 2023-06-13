@@ -1,12 +1,6 @@
 const mongoClient = require("mongodb").MongoClient;
 
-const {
-    MONGO_USERNAME,
-    MONGO_PASSWORD,
-    MONGO_HOSTNAME,
-    MONGO_PORT,
-    MONGO_DB
-} = process.env;
+const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_HOSTNAME, MONGO_PORT, MONGO_DB } = process.env;
 
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 
@@ -18,7 +12,7 @@ const mongoConnect = (cb) => {
         useUnifiedTopology: true
     })
     .then(res => {
-        console.log('Success', res, url);
+        console.log('Successfully connected with mongodb with ', url);
         _db = res.db();
         cb();
     }).
