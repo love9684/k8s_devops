@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app
+      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:$(date +%s)
     
     - name: Push image on Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app
