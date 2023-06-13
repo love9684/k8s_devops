@@ -19,6 +19,9 @@ spec:
       containers:
       - image: mongo
         name: mongodb
+        volumeMounts:
+          - name: mongo-persistent-storage
+            mountPath: /data/db
         ports:
         - containerPort: 27017
         env:
@@ -32,6 +35,10 @@ spec:
             secretKeyRef:
               name: mongo-credentials
               key: mongo-root-password
+      volumes:
+      - name: mongo-persistent-storage
+        persistentVolumeClaim:
+          claimName: mongo-data-pvc-storage-class
 ---
 apiVersion: v1
 kind: Service
