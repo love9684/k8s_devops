@@ -24,5 +24,5 @@ jobs:
     - name: Build the Docker image
       run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app
     
-    - name: Login Docker
+    - name: Push image on Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app
