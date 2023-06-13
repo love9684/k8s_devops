@@ -25,4 +25,4 @@ jobs:
       run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:$(date +%s)
     
     - name: Push image on Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app
+      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:$(date +%s)
