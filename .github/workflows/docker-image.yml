@@ -14,12 +14,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build -t loveleshagrawal/k8s-node-app .
-    - name: Login Docker
-    - uses: docker/login-action@v1
+    
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
       with:
         registry: loveleshagrawal/k8s-node-app
         username: ${{ secrets.DOCKER_USERNAME  }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - run: docker push loveleshagrawal/k8s-node-app
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag loveleshagrawal/k8s-node-app
+    
+    - name: Login Docker
+      run: docker push loveleshagrawal/k8s-node-app
