@@ -57,8 +57,7 @@ jobs:
     - name: Docker configuration
       run: |
         echo "${{ secrets.GCP_CREDENTIALS }}" > key.json
-        gcloud auth activate-service-account --key-file=key.json
-        docker login -u _json_key --password-stdin https://$GAR_LOCATION-docker.pkg.dev
+        docker login -u _json_key --p "$(cat key.json)" https://$GAR_LOCATION-docker.pkg.dev
         rm key.json
     # Get the GKE credentials so we can deploy to the cluster
     - name: Set up GKE credentials
