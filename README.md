@@ -4,6 +4,11 @@
 
 ## URLs
 
+#### Video recording of assignment
+```bash
+https://drive.google.com/file/d/1Fy_L5WItr4gBjTIWg99GRBwlfVzHXZQ7/view?usp=sharing
+```
+
 #### Docker Hub URL
 ```bash
 https://hub.docker.com/repository/docker/loveleshagrawal/k8s-node-app/general
