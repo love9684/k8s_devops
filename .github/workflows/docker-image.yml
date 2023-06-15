@@ -48,7 +48,7 @@ jobs:
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
-    needs: build-push-image
+    needs: [build-push-image, get-hash]
     runs-on: ubuntu-latest
     environment: production
 
