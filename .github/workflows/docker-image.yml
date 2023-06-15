@@ -36,10 +36,10 @@ jobs:
     #   run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
     
     - name: Build the Docker image
-      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:"$GITHUB_SHA"
+      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:$GITHUB_SHA
     
     - name: Push image on Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:"$GITHUB_SHA"
+      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:$GITHUB_SHA
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
@@ -78,4 +78,4 @@ jobs:
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
-        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:"$GITHUB_SHA"
+        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:$GITHUB_SHA
