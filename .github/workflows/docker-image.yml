@@ -18,7 +18,7 @@ env:
 
 jobs:
 
-  get-hash:
+  setup:
     
     runs-on: ubuntu-latest
 
@@ -28,7 +28,7 @@ jobs:
       run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
 
   build-push-image:
-    needs: get-hash
+    needs: setup
     runs-on: ubuntu-latest
 
     steps:
@@ -41,14 +41,14 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         
     - name: Build the Docker image
-      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{needs.get-hash.outputs.hash}}
+      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ needs.setup.outputs.hash }}
     
     - name: Push image on Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{needs.get-hash.outputs.hash}}
+      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ needs.setup.outputs.hash }}
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
-    needs: [build-push-image, get-hash]
+    needs: [build-push-image, setup]
     runs-on: ubuntu-latest
     environment: production
 
@@ -83,4 +83,4 @@ jobs:
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
-        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{needs.get-hash.outputs.hash}}
+        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.setup.outputs.hash }}
