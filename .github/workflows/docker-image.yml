@@ -79,7 +79,9 @@ jobs:
     #     chmod u+x ./kustomize
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
+      working-directory: k8s_objects
       run: |-
         # replacing the image name in the k8s template
         echo ${{ needs.build-push-image.outputs.hash }}
-        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
+        kubectl apply -f .
+        # kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
