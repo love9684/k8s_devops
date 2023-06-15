@@ -18,21 +18,15 @@ env:
 
 jobs:
 
-  setup:
-    
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Get Git Commit Hash
-      id: git_commit_hash
-      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
-
   build-push-image:
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Get Git Commit Hash
+      id: git_commit_hash
+      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
     
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -41,14 +35,14 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         
     - name: Build the Docker image
-      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ needs.setup.outputs.hash }}
+      run: docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }}
     
     - name: Push image on Docker Hub
-      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ needs.setup.outputs.hash }}
+      run: docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }}
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
-    needs: [build-push-image, setup]
+    needs: build-push-image
     runs-on: ubuntu-latest
     environment: production
 
@@ -83,4 +77,4 @@ jobs:
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
-        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.setup.outputs.hash }}
+        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
