@@ -21,12 +21,16 @@ jobs:
   build-push-image:
     runs-on: ubuntu-latest
 
+    # Map a step output to a job output
+    outputs:
+      hash: ${{ steps.git_commit_hash.outputs.hash }}
+
     steps:
     - uses: actions/checkout@v3
 
     - name: Get Git Commit Hash
       id: git_commit_hash
-      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+      run: echo "hash=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
     
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -77,4 +81,5 @@ jobs:
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
+        echo ${{ needs.build-push-image.outputs.hash }}
         kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
