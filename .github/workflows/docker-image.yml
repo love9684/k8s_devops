@@ -63,11 +63,11 @@ jobs:
     # - name: Docker configuration
     #   run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
     # Get the GKE credentials so we can deploy to the cluster
-    # - name: Set up GKE credentials
-    #   uses: google-github-actions/get-gke-credentials@v0
-    #   with:
-    #     cluster_name: ${{ env.GKE_CLUSTER }}
-    #     location: ${{ env.GKE_ZONE }}
+    - name: Set up GKE credentials
+      uses: google-github-actions/get-gke-credentials@v0
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
 
     # Build the Docker image
     # - name: Build
@@ -93,7 +93,7 @@ jobs:
       run: |-
         # replacing the image name in the k8s template
         # ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
-        gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }} --project ${{ env.PROJECT_ID }}
+        # gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }} --project ${{ env.PROJECT_ID }}
         kubectl set image deployment/node-app-deployment node-app-container=loveleshagrawal/k8s-node-app:"$GITHUB_SHA"
         # ./kustomize build . | kubectl apply -f -
         # kubectl apply -f node-app.deploy.yaml
