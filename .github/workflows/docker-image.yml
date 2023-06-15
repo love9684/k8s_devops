@@ -84,4 +84,4 @@ jobs:
         # Apply all yaml files
         kubectl apply -f .
         # replacing the image name in the k8s template
-        # kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
+        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
