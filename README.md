@@ -22,11 +22,6 @@ Note:
 - All the YAMLs files are placed [here](https://github.com/love9684/k8s_devops/tree/main/k8s_objects).
 - Code for serice with Docker file are placed [here](https://github.com/love9684/k8s_devops/tree/main/server).
 
-#### Recording link
-```bash
-https://github.com/love9684/k8s_devops
-```
-
 ## WEB API Reference
 Add user
 ```bash
