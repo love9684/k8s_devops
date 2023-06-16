@@ -10,7 +10,7 @@ env:
   # PROJECT_ID: ${{ secrets.GKE_PROJECT }} # apt-diode-386016
   # GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
   GKE_CLUSTER: autopilot-cluster-1    # TODO: update to cluster name
-  GKE_ZONE: us-central1-a   # TODO: update to cluster zone
+  GKE_ZONE: us-central1   # TODO: update to cluster zone
   DEPLOYMENT_NAME: node-app-deployment # TODO: update to deployment name
   CONTAINER_NAME: node-app-container # TODO: update to deployment name
   # REPOSITORY: node-repo # TODO: update to Artifact Registry docker repository
@@ -39,14 +39,11 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         
     - name: Build the Docker image
-      run: |-
-        docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }}
-        docker tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }} ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:latest
-
+      run: docker build ./server --file ./server/Dockerfile --tag $IMAGE:${{ steps.git_commit_hash.outputs.hash }} --tag $IMAGE:latest
     - name: Push image on Docker Hub
       run: |-
-        docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:latest
-        docker push ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }}
+        docker push $IMAGE:latest
+        docker push $IMAGE:${{ steps.git_commit_hash.outputs.hash }}
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
