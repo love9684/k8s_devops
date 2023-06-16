@@ -41,7 +41,7 @@ jobs:
     - name: Build the Docker image
       run: |-
         docker build ./server --file ./server/Dockerfile --tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }}
-        docker tag k8s-node-app:${{ steps.git_commit_hash.outputs.hash }} ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:latest
+        docker tag ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:${{ steps.git_commit_hash.outputs.hash }} ${{ secrets.DOCKER_USERNAME  }}/k8s-node-app:latest
 
     - name: Push image on Docker Hub
       run: |-
