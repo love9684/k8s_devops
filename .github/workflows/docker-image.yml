@@ -42,8 +42,8 @@ jobs:
       run: docker build ./server --file ./server/Dockerfile --tag $IMAGE:${{ steps.git_commit_hash.outputs.hash }} --tag $IMAGE:latest
     - name: Push image on Docker Hub
       run: |-
-        docker push $IMAGE:latest
         docker push $IMAGE:${{ steps.git_commit_hash.outputs.hash }}
+        docker push $IMAGE:latest
 
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
@@ -85,4 +85,4 @@ jobs:
         # Apply all yaml files
         kubectl apply -f .
         # replacing the image name in the k8s template
-        kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:${{ needs.build-push-image.outputs.hash }}
+        # kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE:latest
