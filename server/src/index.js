@@ -15,6 +15,6 @@ app.use('/dummy', dummyRouter);
 
 mongoConnect(() => {
     server.listen(port, () => {
-        console.log('Node app is listening on port: ', port)
+        console.log('Node app is listening on port:: ', port)
     })
 })
